@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<style>
+@page { size: A4; margin: 13mm 14mm 13mm 14mm; }
+* { box-sizing: border-box; }
+code { font-family: "Noto Sans CJK KR", monospace; background:#f2f5fb; padding:0 1mm; border-radius:1mm; }
+body { font-family: "Noto Sans CJK KR", sans-serif; color: #1f2430; font-size: 9.1pt; line-height: 1.5; margin: 0; }
+h1 { font-size: 19pt; margin: 0 0 2mm; letter-spacing: -0.3px; }
+.sub { color: #5a6275; margin-bottom: 5mm; font-size: 10pt; }
+h2 { font-size: 12pt; margin: 4.5mm 0 2mm; padding-bottom: 1.2mm; border-bottom: 1.5px solid #4C72B0; color: #1d3c78; }
+h3 { font-size: 10.2pt; margin: 3mm 0 1mm; }
+p { margin: 1mm 0 1.6mm; }
+.kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2.5mm; margin: 3mm 0 2mm; }
+.kpi { background: #f2f5fb; border-radius: 2mm; padding: 2.5mm 3mm; }
+.kpi b { display: block; font-size: 14pt; color: #1d3c78; }
+.kpi span { font-size: 8.2pt; color: #5a6275; }
+.flow { display: flex; align-items: stretch; gap: 1.5mm; margin: 3mm 0; }
+.flow div { flex: 1; background: #fff; border: 1px solid #c9d3e6; border-radius: 1.8mm; padding: 2mm 1.5mm; text-align: center; font-size: 8.3pt; }
+.flow div b { display: block; color: #4C72B0; font-size: 8pt; }
+.flow .key { background: #1d3c78; color: #fff; border-color: #1d3c78; }
+.flow .key b { color: #bcd0f5; }
+.flow i { align-self: center; font-style: normal; color: #8a93a6; }
+.cap { font-size: 8.2pt; color: #5a6275; text-align: center; margin-top: -1mm; }
+table { width: 100%; border-collapse: collapse; margin: 1.5mm 0 2mm; font-size: 8.8pt; }
+th, td { border-bottom: 1px solid #e1e6ef; padding: 1.3mm 2mm; text-align: left; }
+th { background: #f2f5fb; font-weight: 700; }
+td.n, th.n { text-align: right; }
+.box { background: #fbf6ea; border-left: 3px solid #d9a441; padding: 2mm 3mm; margin: 2mm 0; font-size: 9pt; }
+.formula { background: #f6f7f9; border-radius: 1.5mm; padding: 1.8mm 3mm; font-size: 9pt; margin: 1.5mm 0; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; }
+.steps { counter-reset: s; }
+.step { break-inside: avoid; }
+.step h3::before { counter-increment: s; content: counter(s); display: inline-block; width: 5.2mm; height: 5.2mm; line-height: 5.2mm; text-align: center; border-radius: 50%; background: #4C72B0; color: #fff; font-size: 8pt; margin-right: 2mm; }
+img { width: 80%; display: block; margin: 0 auto; }
+ol.q li { margin-bottom: 1.4mm; }
+ol.q li span { color: #5a6275; font-size: 8.6pt; display: block; }
+.pb { break-before: page; }
+.foot { margin-top: 5mm; font-size: 7.8pt; color: #8a93a6; }
+</style></head><body>
+
+<h1>신용평가 스코어카드 프로젝트: 동작 원리 요약</h1>
+<div class="sub">15만 명 대출 데이터 → 점수표 → 승인 기준점 손익 분석 → 웹 시뮬레이터 → 사용자 로그 분석</div>
+
+<div class="kpis">
+  <div class="kpi"><b>0.858</b><span>스코어카드 AUC (LightGBM 0.869)</span></div>
+  <div class="kpi"><b>6.7% → 2.4%</b><span>승인율 80% 시 승인자 부도율</span></div>
+  <div class="kpi"><b>71%</b><span>사전 차단한 부도자 비율</span></div>
+  <div class="kpi"><b>539점</b><span>손익 최대 기준점 (전원 승인 대비 +29%)</span></div>
+</div>
+
+<h2>전체 흐름</h2>
+<div class="flow">
+  <div><b>①</b>구간 나누기</div><i>›</i>
+  <div><b>②</b>WoE 변환</div><i>›</i>
+  <div><b>③</b>로지스틱 회귀</div><i>›</i>
+  <div class="key"><b>④</b>점수표<br>scorecard.json</div><i>›</i>
+  <div><b>⑤</b>기준점 손익 분석</div><i>›</i>
+  <div><b>⑥</b>앱 · 이벤트 기록</div><i>›</i>
+  <div><b>⑦</b>로그 분석 · A/B</div>
+</div>
+<p class="cap">④번 점수표 하나가 분석(노트북)과 서비스(앱)를 연결한다. 앱은 모델을 다시 학습하지 않고 점수표만 읽는다.</p>
+
+<h2>모델 만들기 (①~④)</h2>
+<div class="steps">
+<div class="step">
+<h3>구간 나누기 (Binning)</h3>
+<p>숫자를 그대로 쓰지 않고 구간으로 묶는다. 경계는 <b>의사결정나무</b>가 "부도자와 정상인이 가장 잘 갈리는 지점"을 찾아 정한다.</p>
+<table>
+<tr><th>리볼빙 사용률</th><th class="n">0~19%</th><th class="n">19~40%</th><th class="n">40~67%</th><th class="n">67~87%</th><th class="n">87~100%</th><th class="n">100% 초과</th></tr>
+<tr><td>부도율</td><td class="n">2.0%</td><td class="n">4.2%</td><td class="n">8.7%</td><td class="n">13.7%</td><td class="n">19.1%</td><td class="n">38.1%</td></tr>
+</table>
+<p>구간화를 하면 세 가지 이점이 있다. <b>이상치가 무력화</b>되고(사용률 5,000,000%도 마지막 구간에 들어감), <b>결측과 특수코드를 따로</b> 둘 수 있고(소득 미기재, 연체 96·98), <b>비선형 관계</b>도 표현된다.</p>
+</div>
+
+<div class="step">
+<h3>WoE 변환과 IV</h3>
+<div class="formula">WoE = ln( 그 구간의 정상 고객 비중 ÷ 그 구간의 부도 고객 비중 )　→ 양수면 안전, 음수면 위험</div>
+<p><b>IV</b>는 변수의 예측력이다. 구간들이 부도율을 얼마나 확실히 갈라놓는지를 합친 값이다. 리볼빙 사용률이 1.13으로 가장 강했고, 연체 이력 3종이 0.55~0.83, 나이가 0.25였다.</p>
+</div>
+
+<div class="step">
+<h3>로지스틱 회귀 + 부호 검사</h3>
+<div class="formula">log(부도 odds) = b<sub>0</sub> + b<sub>1</sub>·WoE(리볼빙) + b<sub>2</sub>·WoE(연체) + …</div>
+<p>WoE가 클수록 안전하므로 계수는 모두 <b>음수</b>여야 맞다. ‘보유 대출·카드 수’는 다른 변수와 정보가 겹쳐 부호가 뒤집혔다. 설명할 수 없는 점수표가 되므로 제거하고 다시 학습했다. 최종 변수는 9개다.</p>
+</div>
+
+<div class="step">
+<h3>점수표로 변환 (스케일링)</h3>
+<p>log odds를 사람이 읽는 점수로 바꾼다. 기준은 두 가지다. <b>600점 = 정상 대 부도 50:1</b>, 그리고 <b>20점 오를 때마다 그 비율이 2배</b>(PDO = 20). 이렇게 하면 구간마다 정수 점수가 붙고, <b>총점 = 해당 구간 점수의 합</b>이 된다.</p>
+<div class="box">예: 리볼빙 사용률 95%는 41점 구간이다. 19% 이하 구간은 85점이다. 그래서 앱이 "사용률을 19% 이하로 낮추면 <b>+44점</b>"이라고 바로 알려줄 수 있다. 이것이 <b>설명 가능한 모델</b>의 실제 의미다.</div>
+</div>
+</div>
+
+<h3 class="pb">비교 모델: LightGBM</h3>
+<p>나무 수백 개를 순서대로 쌓아, 앞의 나무가 틀린 부분을 다음 나무가 보완한다. 구간과 변수 조합을 스스로 찾아 성능이 조금 높다. 그러나 "왜 이 점수인가"를 점수표처럼 보여줄 수 없다.</p>
+<table>
+<tr><th></th><th class="n">AUC</th><th class="n">KS</th><th class="n">승인율 80% 시 승인된 부도자</th><th class="n">1인당 손익</th></tr>
+<tr><td>스코어카드 (운영 권고)</td><td class="n">0.858</td><td class="n">0.560</td><td class="n">577명</td><td class="n">0.670</td></tr>
+<tr><td>LightGBM (챌린저)</td><td class="n">0.869</td><td class="n">0.583</td><td class="n">537명</td><td class="n">0.675 (+0.8%)</td></tr>
+</table>
+
+<h2>승인 기준점(cut-off) 분석 (⑤)</h2>
+<p>대출금액 정보가 없어서, 1건당 동일 금액이라는 가정 아래 손익을 정의했다.</p>
+<div class="formula">1인당 손익 = ( 승인된 정상 고객 수 × <b>1</b> − 승인된 부도 고객 수 × <b>6</b> ) ÷ 전체 신청자 수　　<span style="color:#5a6275">(마진 10%, 손실률 60% 가정)</span></div>
+<p>기준점을 400점부터 640점까지 <b>1점씩 올려가며</b> 손익을 계산했다. 기준을 낮추면 부도가 늘고, 높이면 정상 고객까지 거절한다. 그 사이에서 손익이 가장 높은 지점을 찾는다.</p>
+<img src="../../reports/cutoff_tradeoff.png">
+<table>
+<tr><th>정책</th><th class="n">승인율</th><th class="n">승인자 부도율</th><th class="n">부도 차단율</th><th class="n">1인당 손익</th></tr>
+<tr><td>전원 승인</td><td class="n">100%</td><td class="n">6.7%</td><td class="n">0%</td><td class="n">0.532</td></tr>
+<tr><td>승인율 80% (558점↑)</td><td class="n">80.4%</td><td class="n">2.4%</td><td class="n">71.2%</td><td class="n">0.670 (+26%)</td></tr>
+<tr><td><b>손익 최대 (539점↑)</b></td><td class="n">89.9%</td><td class="n">3.4%</td><td class="n">54.6%</td><td class="n"><b>0.686 (+29%)</b></td></tr>
+</table>
+<div class="two">
+<div>
+<h3>왜 검증셋에서 고르고 테스트셋에서 쟀나</h3>
+<p>같은 데이터로 기준점도 정하고 성과도 재면, 시험 문제를 보고 답을 고친 뒤 같은 시험으로 채점하는 것과 같다. 그래서 기준점은 검증셋에서 정하고, 성과는 처음 보는 테스트셋에서 측정했다.</p>
+</div>
+<div>
+<h3>민감도 분석</h3>
+<p>"손실 6배" 가정이 틀릴 수 있어서 3배~15배로 바꿔가며 다시 계산했다. 승인율 80%가 최적이 되려면 손실이 이익의 <b>약 10배</b>여야 했다. 결론: <b>승인율 목표는 감이 아니라 손실 구조에서 나와야 한다.</b></p>
+</div>
+</div>
+
+<h2 class="pb">앱과 로그 분석 (⑥~⑦)</h2>
+<div class="two">
+<div>
+<h3>앱 동작</h3>
+<p><b>점수 계산</b>: 입력값이 어느 구간인지 찾아 점수를 더한다. 학습이 없어서 가볍다.</p>
+<p><b>사용자 구분</b>: 첫 접속 때 URL에 익명 ID(<code>?uid=…</code>)를 붙인다. 같은 링크로 다시 오면 재방문으로 집계한다.</p>
+<p><b>A/B 배정</b>: ID를 해시로 바꿔 짝수면 A(점수 중심), 홀수면 B(개선 팁 먼저)로 나눈다. 무작위이면서 같은 사람은 항상 같은 그룹이다.</p>
+<p><b>이벤트 기록</b>: 방문, 계산, 결과 조회, 피드백, 공유를 DB에 한 줄씩 쌓는다. 입력 숫자 원본은 저장하지 않는다.</p>
+</div>
+<div>
+<h3>로그 분석 (SQL)</h3>
+<p><b>퍼널</b>: 방문 → 계산 → 결과 → 피드백 → 공유. 어느 단계에서 가장 많이 빠지는지 찾는다.</p>
+<p><b>A/B 검정</b>: 두 그룹의 "도움됨" 비율 차이가 우연일 확률(p-value)을 본다. 0.05 미만이면 진짜 차이로 판단한다.</p>
+<p><b>필요 표본</b>: 기준 35%에서 +5%p 차이를 잡으려면 <b>군당 약 1,400명</b>이 필요하다. 표본이 부족하면 판정을 미루는 것도 올바른 결론이다.</p>
+<p><b>리텐션 · 유입</b>: 첫 방문일 코호트별 재방문율, <code>?ref=</code> 링크별 전환율.</p>
+</div>
+</div>
+
+<h2>면접 대비 체크 질문</h2>
+<ol class="q">
+<li>WoE를 왜 쓰나요? 원래 숫자를 바로 넣으면 안 되나요?<span>이상치·결측 처리, 비선형 관계, 구간별 점수로 설명 가능</span></li>
+<li>계수 부호가 반대로 나오면 어떻게 하나요?<span>다중공선성 신호 → 변수 제거 후 재학습, 설명 가능성 우선</span></li>
+<li>AUC가 더 높은 LightGBM을 왜 안 썼나요?<span>성능 차이를 손익으로 환산하면 +0.8%, 거절 사유 설명 의무 → 챌린저로 모니터링</span></li>
+<li>승인 기준점은 어떻게 정했나요?<span>손익 함수 정의 → 검증셋에서 최적점 → 테스트셋 검증 → 민감도 분석</span></li>
+<li>A/B 테스트가 유의하지 않으면?<span>필요 표본 계산 → 기간 연장 또는 효과가 큰 지표로 재설계, 결과를 부풀리지 않음</span></li>
+</ol>
+
+<div class="foot">데이터: Kaggle "Give Me Some Credit" (2011), kaggle.com/c/GiveMeSomeCredit (150,000명, 2년 내 90일+ 연체). 방법론: Siddiqi, N. (2017). Intelligent Credit Scoring, 2nd ed., Wiley. 상세 출처·해시는 docs/DATA_SOURCES.md. 분할 60/20/20 층화. 손익 수치는 동일 금액 가정에 기반한 상대 비교이며, 앱은 학습용 모델로 실제 신용평가사 점수와 다르다.</div>
+</body></html>

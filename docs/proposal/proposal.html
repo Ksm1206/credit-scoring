@@ -1,0 +1,250 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<style>
+@page { size: A4; margin: 14mm 15mm 14mm 15mm; }
+* { box-sizing: border-box; }
+body { font-family: "Noto Sans CJK KR", sans-serif; color: #1d2329; font-size: 9pt; line-height: 1.5; margin: 0; }
+.head { border: 1.5px solid #0E3B43; }
+.head .top { background: #0E3B43; color: #fff; padding: 4mm 5mm 3.5mm; }
+.head .kind { font-size: 8.5pt; color: #9cc5bf; letter-spacing: 1px; }
+.head h1 { font-size: 15pt; margin: 1mm 0 0; letter-spacing: -0.3px; }
+.head .tag { font-size: 9.5pt; color: #d7e7e4; margin-top: 1mm; }
+.meta { width: 100%; border-collapse: collapse; font-size: 8.6pt; }
+/*m*/.meta td { white-space: nowrap; border-top: 1px solid #c6d3d1; border-right: 1px solid #c6d3d1; padding: 1.4mm 3mm; }
+.meta td:last-child { border-right: none; }
+.meta td.k { background: #eef4f3; font-weight: 700; width: 17mm; color: #0E3B43; }
+h2 { font-size: 11.5pt; color: #0E3B43; margin: 4.5mm 0 1.8mm; display: flex; align-items: center; gap: 2mm; }
+h2 .no { background: #0E3B43; color: #fff; font-size: 9pt; width: 6mm; height: 6mm; display: inline-flex; align-items: center; justify-content: center; border-radius: 1mm; }
+h3 { font-size: 9.8pt; margin: 2.5mm 0 1mm; color: #1F7A73; }
+p { margin: 1mm 0 1.5mm; }
+ul { margin: 1mm 0 1.5mm; padding-left: 4.5mm; }
+li { margin-bottom: 0.7mm; }
+table.t { width: 100%; border-collapse: collapse; margin: 1.5mm 0 2mm; font-size: 8.7pt; }
+table.t th, table.t td { border: 1px solid #d3dedc; padding: 1.3mm 2.2mm; vertical-align: top; text-align: left; }
+table.t th { background: #eef4f3; color: #0E3B43; font-weight: 700; }
+table.t td.n { text-align: right; white-space: nowrap; }
+table.t tr.hl td { background: #e3f1ee; font-weight: 700; }
+.summary { border: 1px solid #1F7A73; background: #f4faf9; padding: 2.2mm 4mm; margin-top: 3mm; }
+.summary b.lbl { color: #1F7A73; }
+.kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2mm; margin: 2mm 0; }
+.kpi { border: 1px solid #d3dedc; padding: 2mm 2.5mm; }
+.kpi b { display: block; font-size: 13pt; color: #0E3B43; }
+.kpi span { font-size: 7.9pt; color: #5b6b7a; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; }
+.note { font-size: 8.2pt; color: #5b6b7a; }
+.warn { border-left: 0; background: #fdf1ec; padding: 2mm 3mm; font-size: 8.8pt; margin: 2mm 0; }
+.warn b { color: #c4441f; }
+img { width: 92%; display: block; margin: 1mm auto 0; }
+.gantt { width: 100%; border-collapse: collapse; font-size: 8.4pt; margin: 1.5mm 0; }
+.gantt th, .gantt td { border: 1px solid #d3dedc; padding: 1.2mm 2mm; }
+.gantt th { background: #eef4f3; color: #0E3B43; font-weight: 700; text-align: center; }
+.gantt td.task { width: 46%; }
+.gantt td.c { text-align: center; padding: 1mm; }
+.bar { height: 3.2mm; background: #1F7A73; border-radius: 0.6mm; }
+.bar.done { background: #8FB8B2; }
+.bar.key { background: #E4572E; }
+.pb { break-before: page; }
+.shots { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; margin-top: 2mm; align-items: start; }
+.shots figure { margin: 0; border: 1px solid #d3dedc; padding: 2mm; }
+.shots img, .dash img { width: 100%; margin: 0; }
+figcaption { font-size: 8.2pt; color: #5b6b7a; margin-top: 1.5mm; text-align: center; }
+.dash { border: 1px solid #d3dedc; padding: 2mm; margin: 2mm 0 0; }
+.ok { color: #1F7A73; font-weight: 700; }
+.foot { margin-top: 4mm; font-size: 7.8pt; color: #7b8794; border-top: 1px solid #d3dedc; padding-top: 1.5mm; }
+.status { font-size: 7.6pt; padding: 0.2mm 1.5mm; border-radius: 0.8mm; white-space: nowrap; }
+.s-done { background: #e3f1ee; color: #1F7A73; }
+.s-todo { background: #fdf1ec; color: #c4441f; }
+</style></head><body>
+
+<div class="head">
+  <div class="top">
+    <div class="kind">PROJECT PROPOSAL · 데이터 분석 포트폴리오</div>
+    <h1>개인 신용평가 스코어카드 구축 및 신용점수 시뮬레이터 서비스 기획서</h1>
+    <div class="tag">"몇 점부터 승인해야 손익이 가장 좋은가"에 답하는 모델을 만들고, 실사용자 데이터로 서비스를 개선함</div>
+  </div>
+  <table class="meta"><tr>
+    <td class="k">작성일</td><td>2026.10.30</td>
+    <td class="k">작성자</td><td>(이름)</td>
+    <td class="k">기간</td><td>2026.10.30 ~ 12.4 (5주)</td>
+    <td class="k">상태</td><td>1단계 완료 · 앱 동작 검증 완료</td>
+  </tr></table>
+</div>
+
+<div class="summary">
+  <b class="lbl">요약</b>　공개 대출 데이터 15만 건으로 설명 가능한 신용평가 스코어카드를 구축함(AUC 0.858). 승인 기준점별 손익을 분석한 결과, 통상의 "승인율 80%" 목표보다 <b>539점(승인율 90%) 기준이 손익 측면에서 우월함</b>을 확인함(전원 승인 대비 +29%). 이 모델을 웹 서비스로 배포하고, 이벤트 로그와 A/B 테스트로 사용자 경험을 데이터 기반으로 개선할 계획임.
+</div>
+
+<h2><span class="no">1</span>추진 배경 및 목적</h2>
+<div class="two">
+<div>
+<h3>배경</h3>
+<ul>
+<li>신용평가 모델은 높은 예측 성능만으로는 쓸 수 없음. <b>거절 사유 설명 의무</b>가 있고, <b>승인 정책이 손익에 미치는 영향</b>까지 판단해야 함</li>
+<li>공개 프로젝트 다수가 AUC 비교에서 끝남. 모델이 실제 의사결정과 서비스로 이어지는 과정이 빠져 있음</li>
+</ul>
+</div>
+<div>
+<h3>목적</h3>
+<ul>
+<li><b>분석</b>: 설명 가능한 점수표를 만들고, 손익 기준으로 최적 승인 기준점을 제시함</li>
+<li><b>서비스</b>: 모델을 웹 앱으로 배포해 실사용자 데이터를 확보함</li>
+<li><b>개선</b>: 퍼널·리텐션·A/B 테스트로 근거 있는 개선 결정을 1건 이상 내림</li>
+</ul>
+</div>
+</div>
+
+<h2><span class="no">2</span>과제 정의 및 범위</h2>
+<table class="t">
+<tr><th style="width:20%">핵심 질문</th><th>세부 내용</th><th style="width:22%">산출물</th></tr>
+<tr><td><b>Q1.</b> 누가 부도를 내는가</td><td>변수별 위험 구간 파악, 예측력(IV) 평가, 데이터 품질 이슈 처리</td><td>EDA·변수 분석 노트북</td></tr>
+<tr><td><b>Q2.</b> 위험을 어떻게 점수화하는가</td><td>WoE 로지스틱 스코어카드(운영)와 LightGBM(비교) 구축, AUC·KS·PSI 검증</td><td>점수표(scorecard.json)</td></tr>
+<tr><td><b>Q3.</b> 몇 점부터 승인하는가</td><td>기준점별 승인율·부도율·손익 산출, 손실 구조 민감도 분석</td><td>승인 정책 권고안</td></tr>
+<tr><td><b>Q4.</b> 사용자에게 어떻게 전달하는가</td><td>점수·등급·개선 방법을 보여주는 시뮬레이터 배포, 로그 기반 개선</td><td>웹 앱, 운영 대시보드</td></tr>
+</table>
+<p class="note">범위 외: 실제 대출 심사 적용, 국내 신용평가사(KCB·NICE) 점수 재현, 거절자 성과 추정(Reject Inference)</p>
+
+<h2><span class="no">3</span>데이터</h2>
+<table class="t">
+<tr><th style="width:24%">데이터셋</th><th>내용</th><th style="width:14%">규모</th><th style="width:18%">용도</th></tr>
+<tr><td><b>Give Me Some Credit</b><br><span class="note">Kaggle, 2011</span></td><td>미국 개인 대출자의 2년 내 90일 이상 연체 여부, 소득·연체 이력·한도 사용률 등 10개 변수</td><td class="n">150,000명<br>부도율 6.7%</td><td>모델 학습·평가</td></tr>
+<tr><td>LendingClub LoanStats3a</td><td>2007~2011년 P2P 대출 실적. 대출금액·금리 포함</td><td class="n">40,347건</td><td>금액 기반 손익 재검증(후속)</td></tr>
+<tr><td>UCI German Credit</td><td>독일 은행 대출 신청자 20개 변수</td><td class="n">1,000명</td><td>방법론 연습</td></tr>
+</table>
+<ul>
+<li><b>수집</b>: 공개 미러 2곳의 파일 해시(SHA-256)를 대조해 원본 동일성을 검증함. 출처·커밋·해시는 별도 문서(DATA_SOURCES.md)에 기록함</li>
+<li><b>개인정보</b>: 신용정보는 크롤링 대상이 아니므로 기관이 익명화해 공개한 데이터만 사용함</li>
+<li><b>품질 이슈 처리</b>: 연체 횟수 특수코드(96·98) 269건 분리, 소득 결측 20%는 결측 자체를 구간으로 유지함(결측자 부도율 5.6% &lt; 기재자 6.9%)</li>
+</ul>
+
+<h2 class="pb"><span class="no">4</span>분석 방법</h2>
+<table class="t">
+<tr><th style="width:18%">단계</th><th>방법</th><th style="width:30%">설계 의도</th></tr>
+<tr><td>구간화</td><td>의사결정나무로 변수별 최대 6개 구간 도출, 결측·특수코드는 별도 구간</td><td>이상치 무력화, 비선형 관계 반영</td></tr>
+<tr><td>WoE · IV</td><td>구간별 WoE = ln(정상 비중 / 부도 비중), IV 0.02 미만 변수 제외</td><td>변수 예측력의 정량 비교</td></tr>
+<tr><td>로지스틱 회귀</td><td>WoE 입력. 계수 부호가 직관과 반대인 변수는 제거 후 재학습(1개 제거, 최종 9개)</td><td>설명 가능한 점수표 보장</td></tr>
+<tr><td>점수 스케일링</td><td>600점 = 정상:부도 50:1, 20점마다 odds 2배(PDO 20)</td><td>업계 표준 점수 체계</td></tr>
+<tr><td>비교 모델</td><td>LightGBM, 검증셋 기준 조기 종료</td><td>성능 상한 확인(챌린저 모델)</td></tr>
+<tr><td>검증 설계</td><td>학습·검증·테스트 60/20/20 층화 분할. <b>기준점은 검증셋에서 선택하고, 성과는 테스트셋에서 측정함</b></td><td>테스트셋 과적합 방지</td></tr>
+</table>
+
+<h2><span class="no">5</span>1단계 결과 (완료)</h2>
+<div class="kpis">
+  <div class="kpi"><b>0.858</b><span>스코어카드 AUC · KS 0.56</span></div>
+  <div class="kpi"><b>0.0003</b><span>PSI (학습→테스트 분포 안정)</span></div>
+  <div class="kpi"><b>6.7% → 2.4%</b><span>승인율 80% 시 승인자 부도율</span></div>
+  <div class="kpi"><b>539점</b><span>손익 최대 기준점 (+29%)</span></div>
+</div>
+<div class="two">
+<div>
+<h3>승인 정책 비교 (테스트셋 30,000명)</h3>
+<table class="t">
+<tr><th>정책</th><th>승인율</th><th>부도율</th><th>1인당 손익</th></tr>
+<tr><td>전원 승인</td><td class="n">100%</td><td class="n">6.7%</td><td class="n">0.532</td></tr>
+<tr><td>80% 정책 (558점↑)</td><td class="n">80.4%</td><td class="n">2.4%</td><td class="n">0.670 (+26%)</td></tr>
+<tr class="hl"><td>손익 최대 (539점↑)</td><td class="n">89.9%</td><td class="n">3.4%</td><td class="n">0.686 (+29%)</td></tr>
+</table>
+<p class="note">손익 가정: 정상 승인 +1, 부도 승인 −6(마진 10%, 손실률 60%), 거절 0</p>
+<h3>모델 선택</h3>
+<table class="t">
+<tr><th></th><th>AUC</th><th>80% 시 승인된 부도자</th></tr>
+<tr><td>스코어카드</td><td class="n">0.858</td><td class="n">577명</td></tr>
+<tr><td>LightGBM</td><td class="n">0.869</td><td class="n">537명 (−40)</td></tr>
+</table>
+</div>
+<div>
+<img src="../../reports/cutoff_tradeoff.png" style="width:100%">
+<p class="note" style="text-align:center">기준점별 승인율·부도율·손익 (녹색 점선: 손익 최대, 회색 점선: 승인율 80%)</p>
+</div>
+</div>
+<div class="warn"><b>시사점</b>　① 승인율 80%가 최적이 되려면 부도 손실이 이익의 약 10배여야 함(민감도 분석). 따라서 <b>승인율 목표는 손실 구조에 맞춰 설정해야 함.</b> ② LightGBM의 추가 이득은 손익 +0.8%에 그침. 설명 가능성을 고려해 <b>스코어카드를 운영 모델, LightGBM을 챌린저 모델</b>로 권고함.</div>
+
+<h2 class="pb"><span class="no">6</span>2단계 서비스 기획: 신용점수 시뮬레이터</h2>
+<div class="two">
+<div>
+<h3>서비스 개요</h3>
+<ul>
+<li><b>기능</b>: 조건 입력 → 점수·등급·승인 예상 결과·예상 부도확률, 항목별 점수, 점수 올리는 방법(예: 한도 사용률 95%→19%, +44점)</li>
+<li><b>대상</b>: 사회초년생·대학생 등 신용관리에 관심 있는 사용자</li>
+<li><b>구성</b>: Streamlit 웹 앱, 이벤트 로그 DB(Supabase), 운영 대시보드</li>
+<li><b>개인정보</b>: 입력값 원본은 저장하지 않음. 점수·등급·버튼 클릭만 익명 ID로 기록함</li>
+</ul>
+</div>
+<div>
+<h3>측정 지표</h3>
+<table class="t">
+<tr><th style="width:30%">구분</th><th>지표</th></tr>
+<tr><td>획득</td><td>방문자 수, 유입 경로별 전환율(<code>?ref=</code>)</td></tr>
+<tr><td>활성</td><td>방문 → 계산 전환율</td></tr>
+<tr><td>만족(1차)</td><td>결과 조회자 중 "도움됐어요" 비율</td></tr>
+<tr><td>참여</td><td>재계산률, 공유율</td></tr>
+<tr><td>유지</td><td>D1 · D1~7 재방문율</td></tr>
+</table>
+</div>
+</div>
+
+<h3>A/B 테스트 설계</h3>
+<table class="t">
+<tr><th style="width:16%">항목</th><th>내용</th></tr>
+<tr><td>가설</td><td>점수 설명보다 "점수 올리는 방법"을 먼저 보여주면 사용자가 결과를 더 유용하다고 느낌</td></tr>
+<tr><td>실험군</td><td><b>A(기본형)</b>: 항목별 점수 차트 중심, 개선 팁은 버튼 클릭 시 노출　/　<b>B(코칭형)</b>: 개선 팁 우선 노출, 차트는 접힘</td></tr>
+<tr><td>배정</td><td>익명 ID 해시 기반 50:50. 재방문해도 같은 군에 배정됨</td></tr>
+<tr><td>판정</td><td>두 비율 z-검정, 유의수준 5%. 기준 35%에서 +5%p 검출(검정력 80%)에 <b>군당 약 1,400명</b>이 필요함. 미달 시 판정을 보류하고 기간을 연장함</td></tr>
+</table>
+
+<h2><span class="no">7</span>추진 일정</h2>
+<table class="gantt">
+<tr><th>업무</th><th>W1<br><span class="note">10/30~</span></th><th>W2<br><span class="note">11/6~</span></th><th>W3<br><span class="note">11/13~</span></th><th>W4<br><span class="note">11/20~</span></th><th>W5<br><span class="note">11/27~</span></th><th style="width:12%">상태</th></tr>
+<tr><td class="task">데이터 수집·검증, 스코어카드·기준점 분석</td><td class="c"><div class="bar done"></div></td><td></td><td></td><td></td><td></td><td class="c"><span class="status s-done">완료</span></td></tr>
+<tr><td class="task">앱 개발, 로그·분석 SQL·대시보드</td><td class="c"><div class="bar done"></div></td><td></td><td></td><td></td><td></td><td class="c"><span class="status s-done">완료</span></td></tr>
+<tr><td class="task">GitHub 공개, Supabase 연결, Streamlit 배포</td><td class="c"><div class="bar key"></div></td><td></td><td></td><td></td><td></td><td class="c"><span class="status s-todo">진행 예정</span></td></tr>
+<tr><td class="task">채널별 홍보 (에브리타임·오픈카톡·링크드인)</td><td></td><td class="c"><div class="bar"></div></td><td class="c"><div class="bar"></div></td><td></td><td></td><td class="c"><span class="status s-todo">예정</span></td></tr>
+<tr><td class="task">A/B 테스트 운영, 주간 지표 점검</td><td></td><td class="c"><div class="bar"></div></td><td class="c"><div class="bar"></div></td><td class="c"><div class="bar"></div></td><td></td><td class="c"><span class="status s-todo">예정</span></td></tr>
+<tr><td class="task">결과 분석, 개선 1건 배포, 블로그·이력서 반영</td><td class="c"><div class="bar" style="background:#cfe3e0"></div></td><td></td><td></td><td class="c"><div class="bar"></div></td><td class="c"><div class="bar key"></div></td><td class="c"><span class="status s-todo">예정</span></td></tr>
+</table>
+<p class="note">W1의 연한 막대: 1단계 결과 블로그 초안 작성. 취업 지원은 W2부터 병행함.</p>
+
+<h2 class="pb"><span class="no">8</span>리스크 및 대응</h2>
+<table class="t">
+<tr><th style="width:26%">리스크</th><th>대응 방안</th></tr>
+<tr><td>사용자 수 부족 (A/B 표본 미달)</td><td>채널별 링크로 유입 효율을 점검해 성과 좋은 채널에 집중함. 미달 시 효과가 큰 지표로 재설계하고 판정을 보류함</td></tr>
+<tr><td>손익 가정의 불확실성</td><td>손실/이익 비율 3~15배 민감도 분석을 이미 수행함. LendingClub의 실제 금액 데이터로 재검증할 예정임</td></tr>
+<tr><td>미국 데이터와 국내 사용자 간 차이</td><td>"학습용 모델"임을 앱에 명시하고, 소득은 고정 환율로 환산함. 국내 데이터(신용정보원 CreDB)는 후속 과제로 검토함</td></tr>
+<tr><td>일부 구간 점수의 비직관성</td><td>DTI·소득 구간에 단조성 제약을 적용한 binning으로 개선함(후속 과제)</td></tr>
+<tr><td>서비스 장애 및 로그 유실</td><td>로깅 실패가 서비스를 중단시키지 않게 예외 처리함. 로그는 외부 DB에 저장함. 사전 검증에서 DB 드라이버 불일치로 로그가 조용히 누락되는 문제를 발견해 수정함(부록 A)</td></tr>
+</table>
+
+<h2><span class="no">9</span>기대 효과</h2>
+<ul>
+<li><b>분석 역량 입증</b>: 모델 성능을 손익과 정책 권고로 연결하는 의사결정 중심 분석 사례 확보</li>
+<li><b>실무형 경험</b>: 배포, 실사용자 확보, 로그 설계, SQL 분석, A/B 테스트까지 데이터 분석가의 전 과정 수행</li>
+<li><b>포트폴리오 산출물</b>: GitHub 저장소, 실행 노트북, 운영 중인 서비스 링크, 블로그 2편(모델 / A/B 결과)</li>
+</ul>
+
+
+<h2 class="pb"><span class="no">A</span>부록 A. 서비스 동작 검증 결과</h2>
+<table class="t">
+<tr><th style="width:18%">항목</th><th>내용</th></tr>
+<tr><td>검증일 · 환경</td><td>2026.10.30 · 로컬 서버에서 Streamlit 앱 실행, 배포 환경과 같은 PostgreSQL 16에 연결, Chromium 브라우저로 실제 클릭</td></tr>
+<tr><td>시나리오</td><td>사용자 2명(A군·B군)이 카드 사용률 95%, 30일 연체 1회를 입력하고 점수 계산 → 결과 확인 → 개선 팁 열기 → 피드백 → 공유</td></tr>
+</table>
+<table class="t">
+<tr><th style="width:30%">확인 항목</th><th>결과</th><th style="width:12%">판정</th></tr>
+<tr><td>점수 계산 정확성</td><td>앱 결과 526점, 점수표 손계산(41+50+66+68+56+58+65+58+64)과 일치함</td><td class="ok">정상</td></tr>
+<tr><td>등급 · 승인 판정</td><td>E등급(주의), 거절 예상, 예상 부도확률 20.6%. 정책 기준(539점 미만 거절)과 일치함</td><td class="ok">정상</td></tr>
+<tr><td>A/B 배정</td><td>익명 ID 해시로 A군·B군이 분리되고, 군별 화면이 설계대로 노출됨(아래 화면)</td><td class="ok">정상</td></tr>
+<tr><td>이벤트 로깅</td><td>방문·계산·결과·팁 열기·피드백·공유 14건이 PostgreSQL에 기록됨. 유입 경로 저장, 입력 원본 미저장 확인</td><td class="ok">정상 (수정 후)</td></tr>
+<tr><td>로그 분석</td><td>분석 스크립트가 PostgreSQL에서 직접 퍼널·A/B 지표를 집계함. 대시보드 정상 표시</td><td class="ok">정상</td></tr>
+</table>
+<div class="warn"><b>발견 및 조치</b>　첫 검증에서 화면은 정상이었으나 로그가 0건 기록됨. 원인은 SQLAlchemy 2.1부터 PostgreSQL 기본 드라이버가 psycopg(v3)로 바뀌어, 설치된 psycopg2와 맞지 않았던 것임. 로깅 실패를 예외 처리해 둔 탓에 겉으로 드러나지 않았음. 드라이버를 명시하도록 수정한 뒤 재검증해 전 건 기록을 확인함. 배포 전에 발견하지 못했다면 실험 기간의 데이터가 모두 유실되었을 문제임.</div>
+<div class="shots">
+<figure><img src="../screenshots/pdf_result_A.png"><figcaption>A군(기본형): 항목별 점수 차트 우선, 버튼을 누르면 개선 팁 노출</figcaption></figure>
+<figure><img src="../screenshots/pdf_result_B.png"><figcaption>B군(코칭형): 개선 팁 우선 노출, 차트는 접어둠</figcaption></figure>
+</div>
+
+<h2 class="pb"><span class="no">B</span>부록 B. 운영 대시보드 화면</h2>
+<p>주간 점검에 쓰는 대시보드임. KPI(방문자·전환율·도움됨 비율·재방문율), 일별 추이, 실험군별 퍼널, A/B 검정 결과(p-value·신뢰구간·필요 표본), 유입 경로, 사용자 등급 분포를 한 화면에서 확인함.</p>
+<div class="dash"><img src="../screenshots/dashboard_synthetic.png"></div>
+<p class="note">※ 위 수치는 쿼리·화면 검증용 <b>가상 로그(1,200명)</b>로 생성한 것이며 실제 성과가 아님. 실제 운영 결과는 배포 후 수집한 로그로 대체할 예정임. 가상 데이터에서도 +5.4%p 차이가 유의하지 않게 나와(p=0.089), 군당 약 1,400명의 표본 확보가 필요함을 사전에 확인함.</p>
+
+<div class="foot">데이터: Kaggle "Give Me Some Credit" (2011), kaggle.com/c/GiveMeSomeCredit · 방법론: Siddiqi, N. (2017). Intelligent Credit Scoring (2nd ed.). Wiley. · 손익 수치는 동일 금액 가정 하의 상대 비교임. 상세 출처는 docs/DATA_SOURCES.md 참조.</div>
+</body></html>

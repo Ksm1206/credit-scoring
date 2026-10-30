@@ -1,0 +1,13 @@
+{
+  "grades": [
+    {"grade": "A", "min": 590, "desc": "매우 우수", "bad_rate": 0.011},
+    {"grade": "B", "min": 575, "desc": "우수", "bad_rate": 0.037},
+    {"grade": "C", "min": 558, "desc": "양호", "bad_rate": 0.066},
+    {"grade": "D", "min": 539, "desc": "보통", "bad_rate": 0.115},
+    {"grade": "E", "min": 520, "desc": "주의", "bad_rate": 0.225},
+    {"grade": "F", "min": 0,   "desc": "위험", "bad_rate": 0.453}
+  ],
+  "approve_cutoff": 558,
+  "review_cutoff": 539,
+  "note": "등급별 bad_rate는 GMSC 전체 15만 명 기준 실측 부도율. 승인 558점 = 승인율 80% 정책, 539점 = 손익 최대점(손실/이익 6배 가정)."
+}
