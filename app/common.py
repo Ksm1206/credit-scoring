@@ -144,6 +144,10 @@ def won(x):
     return f"{x * 1e8 / 1e4:,.0f}만 원"
 
 
+def sidebar_note_v3():
+    st.sidebar.caption("생활 금융 도우미는 2026년 10월 31일 기준 정부 발표·보도를 바탕으로 정리한 참고용 계산기입니다. 금융·법률 자문이 아닙니다.")
+
+
 def sidebar_note():
     st.sidebar.caption("학습용 모델입니다. 미국 Kaggle 데이터(2011)로 만들었으며 실제 신용평가사 점수와 다릅니다.")
     st.sidebar.caption("분석 화면의 수치는 테스트셋 30,000명 집계입니다.")

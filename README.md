@@ -1,14 +1,14 @@
 # 생활 금융 도우미 & 신용평가 스코어카드
 
 > **v3** 바뀐 대출 제도(햇살론 통합, 중도상환수수료 인하, 금리인하요구 자동 신청, 스트레스 DSR, 10·15 대책)를 일반인이 **실제로 돈을 아끼는 데** 쓰도록 만든 생활 금융 도우미입니다.
-> **최신** 프레디맥이 2026년 10월 공개한 미국 실제 주담대 15만 건(2021~2023 실행, 2026.6까지 상환 기록)으로 금리 급등기 부도 위험을 시간 기준으로 검증했습니다.
+> **최신** 프레디맥이 2026년 10월 공개한 미국 실제 주택담보대출 15만 건(2021~2023 실행, 2026.6까지 상환 기록)으로 금리 급등기 부도 위험을 시간 기준으로 검증했습니다.
 > **v1~v2** 15만 명 대출 데이터(Kaggle, 2011)로 스코어카드를 만들고 승인 기준점의 손익을 분석한 뒤, 신용사면·청년 공정성·AI 기본법을 같은 모델로 검증했습니다.
 
 **🔗 서비스**: `https://<배포주소>.streamlit.app` <!-- 배포 주소로 교체 --> · **💻 코드**: [github.com/Ksm1206/credit-scoring](https://github.com/Ksm1206/credit-scoring) · **📓 분석 노트북**: [`notebooks/01_credit_scorecard.ipynb`](notebooks/01_credit_scorecard.ipynb)
 
-## 최신 실제 데이터: 금리 급등기 미국 주담대 15만 건 (Freddie Mac, 2026.10 공개)
+## 최신 실제 데이터: 금리 급등기 미국 주택담보대출 15만 건 (Freddie Mac, 2026.10 공개)
 
-📓 [`notebooks/02_freddie_mac_mortgage.ipynb`](notebooks/02_freddie_mac_mortgage.ipynb) · 앱 화면 🇺🇸 **미국 주담대 분석 (2021~23)**
+📓 [`notebooks/02_freddie_mac_mortgage.ipynb`](notebooks/02_freddie_mac_mortgage.ipynb) · 앱 화면 🇺🇸 **미국 주택담보대출 분석 (2021~23)**
 
 | 실행 연도 | 금리 중앙값 | DTI 중앙값 | 24개월 부도율 |
 |---|---|---|---|
@@ -30,14 +30,14 @@
 | 💡 내 금융 혜택 찾기 | 1분 진단으로 나에게 해당하는 혜택만 **연간 절약액 순으로** 정렬 | 아래 전부 |
 | 🔄 대출 갈아타기 계산기 | 수수료·부대비용을 빼고도 이득인지, 몇 달 만에 본전인지 | 중도상환수수료 개편(2025.1.13), 3년 후 면제 |
 | 📉 금리인하요구권 진단 | 신청 사유 해당 여부, 인하폭별 절약액, 신청 방법 | 마이데이터 자동 신청(2026.2), 수용률 19.1%(2026 상반기) |
-| 🏠 주담대 한도 계산기 | LTV·집값별 상한·스트레스 DSR 중 무엇이 한도를 막는지 | 6·27, 10·15 대책, 스트레스 금리 3%(수도권)·0.75%(지방, 2026년 말까지) |
+| 🏠 주택담보대출 한도 계산기 | LTV·집값별 상한·스트레스 DSR 중 무엇이 한도를 막는지 | 6·27, 10·15 대책, 스트레스 금리 3%(수도권)·0.75%(지방, 2026년 말까지) |
 | 🤝 서민금융·채무조정 길잡이 | 정책 대출 자격, 연체 단계별 창구, 불법 금리 판별 | 햇살론 통합·상한 12.5%(2026.1.2), 새도약기금, 최고금리 20% |
 
 - **정책 규칙은 코드와 분리**: `app/rules/rules_2026.json`에 수치·기준일·근거 기사를 함께 저장했습니다. 제도가 바뀌면 이 파일만 고치면 됩니다.
 - **계산 로직은 단위 테스트**: `src/finance_calc.py` + `tests/test_finance_calc.py` (원리금 공식 검산, 수수료 슬라이딩, 한도 제약 3종, 자격 판정)
 - 모든 화면에 근거 자료 링크와 "참고용·금융자문 아님" 안내를 붙였습니다.
 
-| 내 금융 혜택 찾기 | 주담대 한도 계산기 |
+| 내 금융 혜택 찾기 | 주택담보대출 한도 계산기 |
 |---|---|
 | <img src="docs/screenshots/v3/1_benefits.png" width="380"> | <img src="docs/screenshots/v3/4_mortgage.png" width="380"> |
 
@@ -86,8 +86,8 @@ notebooks/01_credit_scorecard.ipynb  EDA → WoE/IV → 스코어카드 → Ligh
 src/scorecard.py                     binning·WoE·점수 스케일링 (노트북과 앱이 공유)
 models/scorecard.json, policy.json   서비스용 점수표, 등급·승인 기준
 models/scorecard_noage.json          나이 제외 비교 모델
-models/mortgage_scorecard.json       프레디맥 주담대 스코어카드
-models/mortgage_artifacts.json       주담대 화면용 집계 (원본 행 없음)
+models/mortgage_scorecard.json       프레디맥 주택담보대출 스코어카드
+models/mortgage_artifacts.json       주택담보대출 화면용 집계 (원본 행 없음)
 scripts/prepare_freddie.py           프레디맥 원자료 → 대출 단위 테이블 (24개월 부도 정의)
 src/mortgage_model.py                숫자형+범주형 WoE 스코어카드
 notebooks/02_freddie_mac_mortgage.ipynb  최신 데이터 분석 노트북
@@ -140,7 +140,7 @@ streamlit run analytics/dashboard.py                                # 대시보�
 ## 데이터 출처
 | 데이터 | 원 출처 | 용도 |
 |---|---|---|
-| **Freddie Mac SFLLD Release 48** (2021~23 대출 150,000건) | [Freddie Mac (2026.10)](https://freddiemac.com/research/datasets/sf-loanlevel-dataset) | 최신 주담대 부도 모델·시간 기준 검증 |
+| **Freddie Mac SFLLD Release 48** (2021~23 대출 150,000건) | [Freddie Mac (2026.10)](https://freddiemac.com/research/datasets/sf-loanlevel-dataset) | 최신 주택담보대출 부도 모델·시간 기준 검증 |
 | Give Me Some Credit (150,000명) | [Kaggle 대회 (2011)](https://www.kaggle.com/c/GiveMeSomeCredit) | v1 모델 학습·평가 |
 | LendingClub LoanStats3a (2007–2011) | LendingClub 공개 대출 실적 데이터 | 수집 완료, 금액 기반 손익 재검증 예정 |
 | Statlog German Credit (1,000명) | [UCI ML Repository](https://archive.ics.uci.edu/dataset/144/statlog+german+credit+data) | 연습용 |

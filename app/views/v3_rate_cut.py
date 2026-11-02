@@ -71,4 +71,4 @@ if picked and not special and st.button("✅ 신청하러 갈게요"):
     st.toast("좋아요! 대출받은 금융회사 앱의 '금리인하요구' 메뉴에서 신청하세요.")
 cm.rule_sources("rate_cut_right", "금리인하요구권 통계·제도 근거")
 cm.v3_disclaimer()
-cm.sidebar_note()
+cm.sidebar_note_v3()

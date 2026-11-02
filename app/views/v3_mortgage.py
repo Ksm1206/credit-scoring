@@ -1,4 +1,4 @@
-"""v3 · 주담대 한도 계산기: 6·27, 10·15 대책과 스트레스 DSR을 한 번에 반영."""
+"""v3 · 주택담보대출 한도 계산기: 6·27, 10·15 대책과 스트레스 DSR을 한 번에 반영."""
 import sys
 from pathlib import Path
 
@@ -15,13 +15,13 @@ R = cm.load_rules()
 SD, MG = R["stress_dsr"], R["mortgage"]
 fc = cm.fc
 
-st.title("🏠 주담대 한도 계산기")
+st.title("🏠 주택담보대출 한도 계산기")
 st.caption("집값·소득·기존 대출을 넣으면 **LTV, 집값별 상한, 스트레스 DSR** 세 가지 규제 중 무엇 때문에 한도가 정해지는지 보여줍니다. "
-           "2025년 6·27, 10·15 대책과 2026년 지방 유예 연장까지 반영했습니다.")
+           "2025년 6·27, 10·15 대책, 2026년 7월 규제지역 추가 지정(동탄·기흥·구리), 지방 유예 연장까지 반영했습니다.")
 
 with st.container(border=True):
     c1, c2, c3 = st.columns(3)
-    region_name = c1.selectbox("지역", list(MG["regions"]))
+    region_name = c1.selectbox("지역", list(MG["regions"]), help=MG["regulated_areas"]["help"])
     price = c2.number_input("집값 (억 원)", 0.5, 100.0, 9.0 if "서울" in region_name else 5.0, step=0.5) * 1e8
     first = c3.toggle("생애최초 구입", value=False)
     c1, c2, c3 = st.columns(3)
@@ -93,15 +93,15 @@ with c2:
 with st.expander("📋 이 지역에 적용되는 규칙", expanded=False):
     lines = [f"- **LTV**: 무주택 {region['ltv_no_house']}%, 생애최초 {region['ltv_first_time']}%"]
     if region["price_caps"]:
-        lines.append("- **집값별 주담대 상한**: 15억 이하 6억 · 15~25억 4억 · 25억 초과 2억 (10·15 대책)")
+        lines.append("- **집값별 주택담보대출 상한**: 15억 이하 6억 · 15~25억 4억 · 25억 초과 2억 (10·15 대책)")
         lines.append(f"- **전입 의무**: {MG['move_in_months']}개월 이내 · **만기** 최장 {region['max_term_years']}년")
     lines.append(f"- **스트레스 금리**: {stress}% ({region['stress_key']}) · 금리 유형별 반영: " +
                  ", ".join(f"{k} {int(v * 100)}%" for k, v in SD["type_ratio"].items()))
     lines.append(f"- **DSR 한도**: 은행 {SD['dsr_cap']['은행']}%, 2금융권 {SD['dsr_cap']['2금융권']}% · 신용대출은 {SD['credit_loan_dsr_term_years']}년 분할상환으로 가정해 합산")
-    lines.append("- 1주택 이상 보유자의 추가 주택 구입용 주담대는 수도권·규제지역에서 금지 (기존 주택 6개월 내 처분 시 예외)")
+    lines.append("- 1주택 이상 보유자의 추가 주택 구입용 주택담보대출은 수도권·규제지역에서 금지 (기존 주택 6개월 내 처분 시 예외)")
     st.markdown("\n".join(lines))
 cm.rule_sources("mortgage", "대출 규제 근거")
 cm.rule_sources("stress_dsr", "스트레스 DSR 근거")
 st.caption("정책대출(디딤돌·보금자리론 등)은 별도 한도·금리 기준이 있어 이 계산에 포함하지 않았습니다.")
 cm.v3_disclaimer()
-cm.sidebar_note()
+cm.sidebar_note_v3()

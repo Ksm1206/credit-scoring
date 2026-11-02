@@ -46,7 +46,7 @@ with st.container(border=True):
     fee_rate = c1.number_input("중도상환수수료율 (%)", 0.0, 3.0, float(default_fee), step=0.05, format="%.2f",
                                help=f"{'2025.1.13 이후' if after else '2025.1.13 이전'} 계약 은행권 평균값을 기본으로 넣었습니다. 약정서의 실제 요율로 바꾸세요.")
     extra = c2.number_input("기타 비용 (만 원)", 0, 1000, 0 if kind == "신용대출" else 50, step=5,
-                            help="인지세, 근저당 설정·말소 비용, 보증료 등. 주담대는 수십만 원이 들 수 있습니다.") * 1e4
+                            help="인지세, 근저당 설정·말소 비용, 보증료 등. 주택담보대출은 수십만 원이 들 수 있습니다.") * 1e4
 
 
 res = fc.refinance(balance, cur_rate, new_rate, remain, method, elapsed, term_m, fee_rate, extra, PF["exempt_months"])
@@ -97,10 +97,10 @@ with st.expander("✅ 갈아타기 전에 확인할 것"):
         f"- **비교는 앱으로**: {R['refinance_platform']['note']}\n"
         "- **조회만으로는 신용점수가 떨어지지 않습니다.** 여러 곳을 비교해도 괜찮습니다.\n"
         f"- **수수료 면제 시점**: 대출 후 {PF['exempt_months'] // 12}년이 지나면 보통 중도상환수수료가 없습니다. 곧 면제라면 기다렸다가 갈아타는 게 나을 수 있습니다.\n"
-        "- **주담대는 한도도 다시 계산**됩니다. 스트레스 DSR 강화로 갈아탈 때 한도가 줄 수 있으니 '주담대 한도 계산기'로 먼저 확인하세요.\n"
+        "- **주택담보대출은 한도도 다시 계산**됩니다. 스트레스 DSR 강화로 갈아탈 때 한도가 줄 수 있으니 '주택담보대출 한도 계산기'로 먼저 확인하세요.\n"
         "- 새 금리가 변동금리라면 앞으로 기준금리가 오르면 상환액도 오릅니다. "
         f"(현재 기준금리 연 {R['base_rate']['value']}%, {R['base_rate']['note']})"
     )
 cm.rule_sources("prepayment_fee", "중도상환수수료 개편 근거")
 cm.v3_disclaimer()
-cm.sidebar_note()
+cm.sidebar_note_v3()

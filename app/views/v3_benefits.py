@@ -107,7 +107,7 @@ if overdue != "없음":
                   "빨리 움직일수록 이자 감면 폭이 크고 신용 회복이 빠릅니다. 서민금융콜센터 1397에서 무료 통합 상담.", "v3_relief"))
 
 if house:
-    cards.append((0, "🏠 집 사기 전 대출 한도 확인", "6·27, 10·15 대책과 스트레스 DSR로 수도권 주담대 한도가 크게 줄었습니다.",
+    cards.append((0, "🏠 집 사기 전 대출 한도 확인", "6·27, 10·15 대책과 스트레스 DSR로 수도권 주택담보대출 한도가 크게 줄었습니다.",
                   "서울·규제지역은 무주택 LTV 40%(생애최초 70%), 집값 15억 이하도 최대 6억, 스트레스 금리 3% 적용. "
                   "계획한 집값으로 실제 한도부터 계산해 보세요.", "v3_mortgage"))
 
@@ -129,7 +129,7 @@ k[1].metric("연간 아낄 수 있는 돈 (추정)", cm.krw(sum(money)) if money
             help="금리인하 0.3%p, 갈아타기 1%p 인하 등 보수적 가정. 실제 금액은 심사 결과에 따라 다릅니다.")
 k[2].metric("기준금리", f"연 {R['base_rate']['value']}%", "11월 26일 결정 예정", delta_color="off")
 
-PAGES = {"v3_refinance": "대출 갈아타기 계산기", "v3_rate_cut": "금리인하요구권 진단", "v3_mortgage": "주담대 한도 계산기",
+PAGES = {"v3_refinance": "대출 갈아타기 계산기", "v3_rate_cut": "금리인하요구권 진단", "v3_mortgage": "주택담보대출 한도 계산기",
          "v3_relief": "서민금융·채무조정 길잡이", "my_score": "내 신용점수"}
 if not cards:
     st.success("지금 바로 챙길 혜택은 보이지 않습니다. 대출 금리가 시장보다 높은지 '대출 갈아타기 계산기'로 한 번 확인해 보세요.")
@@ -143,4 +143,4 @@ for amt, title, why, todo, page in cards:
         st.markdown(f"**할 일** · {todo}")
         st.page_link(str(Path(__file__).with_name(f"{page}.py")), label=f"{PAGES[page]}에서 자세히 보기 →")
 cm.v3_disclaimer()
-cm.sidebar_note()
+cm.sidebar_note_v3()

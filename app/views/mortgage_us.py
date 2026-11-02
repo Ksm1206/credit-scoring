@@ -1,4 +1,4 @@
-"""미국 주담대 부도 분석 (Freddie Mac 2021~2023, 2026.10 공개 데이터)."""
+"""미국 주택담보대출 부도 분석 (Freddie Mac 2021~2023, 2026.10 공개 데이터)."""
 import json
 import sys
 from pathlib import Path
@@ -25,7 +25,7 @@ def load():
 CARD, A = load()
 CAL = A["calibration"]
 
-st.title("🇺🇸 금리 급등기 미국 주담대 분석")
+st.title("🏘️ 금리 급등기 미국 주택담보대출 분석")
 st.caption("미국 주택금융공사 프레디맥(Freddie Mac)이 2026년 10월 공개한 **실제 주택담보대출 15만 건**(2021~2023년 실행, "
            "2026년 6월까지의 월별 상환 기록)으로 만든 부도 예측 모델입니다. 한국 공개 데이터에는 개인별 실제 연체 결과가 없어 미국 데이터를 썼습니다.")
 
@@ -134,4 +134,4 @@ with tab3:
 
 st.caption(f"데이터: [Freddie Mac Single-Family Loan-Level Dataset](https://freddiemac.com/research/datasets/sf-loanlevel-dataset) Release 48 (2026.10), "
            f"연도별 무작위 5만 건 샘플. 학습 {A['meta']['n_dev']:,}건(2021~22), 미래 검증 {A['meta']['n_oot']:,}건(2023). 비상업·연구 목적 이용.")
-st.sidebar.caption("이 화면은 Freddie Mac 2021~2023년 실제 주담대 15만 건(2026.10 공개)으로 만든 분석입니다. 미국 데이터이며 한국 대출 심사와 다릅니다.")
+st.sidebar.caption("이 화면은 Freddie Mac 2021~2023년 실제 주택담보대출 15만 건(2026.10 공개)으로 만든 분석입니다. 미국 데이터이며 한국 대출 심사와 다릅니다.")

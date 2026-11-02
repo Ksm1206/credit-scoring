@@ -95,7 +95,7 @@ def rate_cut_saving(balance, cur_rate, cut_pp, remain_months, method="원리금�
     return {"total": before - after, "first_year": yearly}
 
 
-# ---------------------------------------------------------------- 주담대 한도 (LTV · 가격 상한 · DSR)
+# ---------------------------------------------------------------- 주택담보대출 한도 (LTV · 가격 상한 · DSR)
 def principal_from_payment(annual_payment: float, annual_rate: float, months: int) -> float:
     """연간 상환 여력으로 빌릴 수 있는 원리금균등 대출 원금 (월 상환액 역산)."""
     if annual_payment <= 0:

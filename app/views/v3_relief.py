@@ -106,4 +106,4 @@ with tab3:
     )
     cm.rule_sources("max_legal_rate", "최고금리 근거")
 cm.v3_disclaimer()
-cm.sidebar_note()
+cm.sidebar_note_v3()

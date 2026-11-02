@@ -60,7 +60,7 @@ def test_mortgage_limit_binding_constraints():
     kw = dict(rate=4.0, term_months=360, existing_annual=0, dsr_cap_pct=40, price_caps=caps)
     # 고소득 + 20억 주택(서울) → 가격 상한 4억이 묶임
     r = fc.mortgage_limit(price=20e8, income=3e8, region=seoul, first_time=False,
-                          stress_rate=sd["stress_rate"]["수도권·규제지역 주담대"], type_ratio=1.0, **kw)
+                          stress_rate=sd["stress_rate"]["수도권·규제지역 주택담보대출"], type_ratio=1.0, **kw)
     assert r["binding"] == "가격 상한" and r["limit"] == 4e8
     # 연소득 5천, 서울 8억 → DSR이 묶임, 스트레스 금리로 한도 감소
     r = fc.mortgage_limit(price=8e8, income=5e7, region=seoul, first_time=False,
