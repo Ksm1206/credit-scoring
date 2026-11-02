@@ -35,7 +35,7 @@ ok("점수 계산 526점 일치")
 # 2) 앱 실행 → 계산 → 피드백 (A·B 두 실험군)
 uids = {"A": "demoa0", "B": "demob2"}
 for variant, uid in uids.items():
-    at = AppTest.from_file(str(ROOT / "app/app.py"), default_timeout=60)
+    at = AppTest.from_file(str(ROOT / "app/views/my_score.py"), default_timeout=90)
     at.query_params["uid"] = uid
     at.run()
     assert not at.exception, at.exception
@@ -50,7 +50,40 @@ for variant, uid in uids.items():
     assert not at.exception, at.exception
     ok(f"{variant}군 화면·계산·피드백 정상")
 
-# 3) 이벤트가 DB에 기록됐는지 (로깅 실패는 화면에 드러나지 않으므로 직접 확인)
+# 3) 분석 화면 4개가 오류 없이 뜨고, 핵심 수치가 노트북 결과와 같은지
+expect = {
+    "policy": ("승인자 부도율", "2.4%"),          # 558점 기준 (노트북: 2.39%)
+    "amnesty": ("사면 대상", "5,333명"),
+    "fairness": None,
+    "mortgage_us": ("점수", None),
+    "model_card": ("점수 분포 안정성 PSI (학습→테스트)", "0.0003"),
+}
+for page, chk in expect.items():
+    at = AppTest.from_file(str(ROOT / f"app/views/{page}.py"), default_timeout=90)
+    at.run()
+    assert not at.exception, f"{page}: {at.exception}"
+    if chk:
+        got = {m.label: m.value for m in at.metric}
+        assert chk[0] in got and (chk[1] is None or got[chk[0]] == chk[1]), f"{page}: {chk[0]}={got.get(chk[0])} (기대 {chk[1]})"
+    ok(f"{page} 화면 정상")
+
+# 4) v3 생활 금융 도우미: 진입 화면(내비게이션)과 계산기 5개
+at = AppTest.from_file(str(ROOT / "app/app.py"), default_timeout=90)
+at.query_params["uid"] = "demoa0"
+at.run()
+assert not at.exception, f"app.py: {at.exception}"
+at.button[0].click().run()                                   # 기본값으로 '내 혜택 찾기'
+assert not at.exception, f"benefits: {at.exception}"
+got = {m.label: m.value for m in at.metric}
+assert got.get("나에게 해당하는 항목", "0개") != "0개", got
+ok(f"내 금융 혜택 찾기 정상 (항목 {got['나에게 해당하는 항목']}, 연간 {got.get('연간 아낄 수 있는 돈 (추정)')})")
+for page in ["v3_refinance", "v3_rate_cut", "v3_mortgage", "v3_relief"]:
+    at = AppTest.from_file(str(ROOT / f"app/views/{page}.py"), default_timeout=90)
+    at.run()
+    assert not at.exception, f"{page}: {at.exception}"
+    ok(f"{page} 화면 정상 ({', '.join(f'{m.label}={m.value}' for m in at.metric[:2])})")
+
+# 5) 이벤트가 DB에 기록됐는지 (로깅 실패는 화면에 드러나지 않으므로 직접 확인)
 with events.engine().connect() as c:
     rows = c.execute(text("SELECT variant, event FROM events WHERE user_id IN ('demoa0','demob2')")).fetchall()
 got = {(v, e) for v, e in rows}

@@ -9,28 +9,38 @@ DATABASE_URL="Supabase 주소" python tests/smoke_test.py     # 2단계 후, 실
 마지막 줄에 `ALL PASSED`가 나오면 앱·점수·로깅이 모두 정상이다. 실제 DB로 돌리면 `demoa0`, `demob2` 테스트 행이 남는다. 실험 시작 전에 Supabase SQL Editor에서 `DELETE FROM events WHERE user_id IN ('demoa0','demob2');`로 지운다.
 
 ## 1. GitHub에 올리기 (10분)
-1. github.com에서 새 저장소 `credit-scoring`을 만든다 (Public).
-2. 압축을 푼 폴더에서 아래를 실행한다:
-   ```bash
-   git remote add origin https://github.com/<아이디>/credit-scoring.git
-   git push -u origin main
-   ```
-   커밋은 이미 만들어져 있다. `data/`, `logs/`는 `.gitignore`로 제외된다. Kaggle 데이터는 재배포하지 않고 `scripts/collect_data.sh`로 받게 한다.
+✅ 완료: https://github.com/Ksm1206/credit-scoring
+
+- **웹으로 올릴 때**: 저장소 → Add file → Upload files. 압축을 푼 폴더 **안의 내용물**을 끌어다 놓는다. 수정된 파일만 다시 올려도 된다(같은 이름이면 덮어씀).
+- **Git으로 올릴 때**:
+  ```bash
+  git remote add origin https://github.com/Ksm1206/credit-scoring.git
+  git pull origin main --allow-unrelated-histories   # 웹 업로드로 생긴 커밋과 합치기
+  git push -u origin main
+  ```
+- `data/`, `logs/`는 올리지 않는다. Kaggle 데이터는 재배포하지 않고 `scripts/collect_data.sh`로 받게 한다.
 
 ## 2. 로그 저장소 만들기 (10분), 꼭 배포 전에
+✅ 완료 (Supabase, West EU 리전, Data API 끔, 자동 RLS 켬)
+
 Streamlit Cloud는 재시작하면 디스크가 초기화된다. 그래서 SQLite 로그는 사라진다.
-1. [supabase.com](https://supabase.com)에서 무료 프로젝트를 만든다 (리전: Seoul).
-2. Project Settings → Database → Connection string(URI, **Session pooler**)을 복사한다.
-3. 테이블은 앱이 처음 실행될 때 자동으로 생성된다.
+1. [supabase.com](https://supabase.com)에서 무료 프로젝트를 만든다. 비밀번호는 영문·숫자로만 길게 정하고 따로 적어둔다.
+2. Security: **Enable Data API 끔**(앱은 DB에 직접 접속하므로 불필요), **Enable automatic RLS 켬**.
+3. 상단 **Connect** → **Direct** 탭 → Type: URI, Method: **Session pooler** 주소를 복사하고 `[YOUR-PASSWORD]`를 비밀번호로 바꾼다.
+4. 테이블은 앱이 처음 실행될 때 자동으로 생성된다.
 
 ## 3. Streamlit Community Cloud 배포 (10분)
+✅ 완료
+
 1. [share.streamlit.io](https://share.streamlit.io) → GitHub로 로그인 → **Create app**
 2. Repository: `credit-scoring`, Branch: `main`, Main file: `app/app.py`
 3. Advanced settings → **Secrets**에 아래를 붙여넣는다:
    ```toml
-   DATABASE_URL = "postgresql://postgres.xxxx:비밀번호@aws-0-ap-northeast-2.pooler.supabase.com:5432/postgres"
+   DATABASE_URL = "postgresql://postgres.<프로젝트ID>:비밀번호@aws-0-eu-west-1.pooler.supabase.com:5432/postgres"
    ```
-4. Deploy → 발급된 주소를 `app/app.py`의 공유 링크(`<배포주소>`)와 README에 반영한다.
+   - Secrets 칸의 회색 예시 글씨는 안내문이다. 지우지 않고 바로 입력하면 된다.
+   - **Python version은 3.13**을 고른다(기본값 3.14는 일부 패키지 설치가 실패할 수 있음, 테스트는 3.13에서 함).
+4. Deploy → 발급된 주소를 README 상단 `<배포주소>`에 반영한다. 앱의 공유 링크는 배포 주소를 자동으로 읽는다.
 5. **확인 (필수)**: 앱에서 점수를 한 번 계산한 뒤, Supabase Table Editor에서 `events` 테이블에 행이 생겼는지 본다.
    - 화면이 정상이어도 로그는 실패할 수 있다. 로깅 오류는 서비스를 멈추지 않도록 숨겨져 있기 때문이다.
    - 행이 없으면 Streamlit Cloud → Manage app → **Logs**에서 `[events] log failed` 줄을 찾아 메시지를 확인한다.
@@ -40,6 +50,12 @@ Streamlit Cloud는 재시작하면 디스크가 초기화된다. 그래서 SQLit
      | `No module named 'psycopg'` | 이 저장소 최신 버전(드라이버 명시 수정 포함)인지 확인한다 |
      | `password authentication failed` | Secrets의 비밀번호를 확인한다. 특수문자는 URL 인코딩(`@`→`%40`)해야 한다 |
      | `could not translate host name` / 연결 시간 초과 | Supabase의 **Session pooler** 주소를 썼는지 확인한다(Direct 주소는 IPv6 전용일 수 있음) |
+
+## 홍보 전 체크리스트
+- [ ] 앱에서 점수 계산 → Supabase Table Editor의 `events`에 행이 생기는지 확인
+- [x] README 상단 `<배포주소>`를 실제 주소로 교체 → https://credit-score-ksm.streamlit.app (GitHub에서 README.md 연필 아이콘으로 바로 수정 가능)
+- [ ] 테스트 기록 삭제: Supabase SQL Editor에서 `DELETE FROM events;` 실행
+- [ ] 이 시점의 날짜를 실험 시작일로 기록 (`docs/changelog.md`)
 
 ## 4. 사용자 모으기
 채널별로 **`?ref=` 링크를 다르게** 뿌려야 유입 경로 분석(`acquisition` 쿼리)이 된다.
