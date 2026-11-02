@@ -21,7 +21,7 @@ st.caption("집값·소득·기존 대출을 넣으면 **LTV, 집값별 상한, 
 
 with st.container(border=True):
     c1, c2, c3 = st.columns(3)
-    region_name = c1.selectbox("지역", list(MG["regions"]), help=MG["regulated_areas"]["help"])
+    region_name = c1.selectbox("지역", list(MG["regions"]), help=MG.get("regulated_areas", {}).get("help"))
     price = c2.number_input("집값 (억 원)", 0.5, 100.0, 9.0 if "서울" in region_name else 5.0, step=0.5) * 1e8
     first = c3.toggle("생애최초 구입", value=False)
     c1, c2, c3 = st.columns(3)

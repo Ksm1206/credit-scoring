@@ -157,9 +157,17 @@ def sidebar_note():
 import finance_calc as fc  # noqa: E402,F401
 
 
+RULES_PATH = ROOT / "app/rules/rules_2026.json"
+
+
 @st.cache_resource
+def _load_rules(mtime: float):
+    return json.loads(RULES_PATH.read_text())
+
+
 def load_rules():
-    return json.loads((ROOT / "app/rules/rules_2026.json").read_text())
+    """규칙 파일이 바뀌면(수정 시각 변경) 캐시를 새로 읽는다. 재부팅 없이도 최신 값이 반영된다."""
+    return _load_rules(RULES_PATH.stat().st_mtime)
 
 
 def krw(won: float, signed=False) -> str:
