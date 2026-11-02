@@ -139,8 +139,8 @@ for amt, title, why, todo, page in cards:
         a.markdown(f"#### {title}")
         if 0 < amt < 10 ** 10:
             b.metric("연간 효과", cm.krw(amt))
-        st.markdown(why)
-        st.markdown(f"**할 일** · {todo}")
+        st.markdown(why.replace("~", "\\~"))   # '19~34세 … 1.9~4%'의 물결표 두 개가 취소선으로 바뀌지 않게
+        st.markdown(f"**할 일** · {todo}".replace("~", "\\~"))
         st.page_link(str(Path(__file__).with_name(f"{page}.py")), label=f"{PAGES[page]}에서 자세히 보기 →")
 cm.v3_disclaimer()
 cm.sidebar_note_v3()
