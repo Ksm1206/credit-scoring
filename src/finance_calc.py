@@ -156,9 +156,11 @@ def policy_loan_matches(rules: dict, age: int, income_man: float, score: int | N
                     "limit": f"최대 {s['limit']:,}만 원", "why": "연소득 3,500만 원 이하 + 신용점수 하위 20%",
                     "desc": s["desc"]})
     y = pl["햇살론유스"]
-    if age <= y["age_max"]:
-        out.append({"name": "햇살론유스", "rate": "서민금융진흥원 확인", "limit": "서민금융진흥원 확인",
-                    "why": f"만 {y['age_max']}세 이하 청년", "desc": y["desc"]})
+    if y.get("age_min", 0) <= age <= y["age_max"] and income_man <= y.get("income_max", float("inf")):
+        out.append({"name": "햇살론유스", "rate": y.get("rate_text", "서민금융진흥원 확인"),
+                    "limit": y.get("limit_text", "서민금융진흥원 확인"),
+                    "why": f"만 {y.get('age_min', 19)}~{y['age_max']}세 청년 + 연소득 {y.get('income_max', 3500):,}만 원 이하",
+                    "desc": y["desc"]})
     if low or has_overdue:
         p = pl["불법사금융예방대출"]
         out.append({"name": "불법사금융예방대출", "rate": f"연 {p['rate']}% (전액 상환 시 실질 {p['effective_rate_full_repay']}%)",

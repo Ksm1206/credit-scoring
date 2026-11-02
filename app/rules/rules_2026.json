@@ -103,7 +103,10 @@
       "desc": "햇살론15·최저신용자특례보증을 통합한 상품. 연소득 3,500만 원 이하이면서 신용점수 하위 20%. 사회적배려대상자는 연 9.9%부터, 성실상환 시 단계적으로 금리 인하."
     },
     "햇살론유스": {
-      "age_max": 34, "desc": "대학생·취업준비생·사회초년생 대상 청년 전용 보증 상품. 세부 요건은 서민금융진흥원에서 확인."
+      "age_min": 19, "age_max": 34, "income_max": 3500,
+      "rate_text": "연 1.9~4%",
+      "limit_text": "최대 1,200만 원",
+      "desc": "만 19~34세, 연소득 3,500만 원 이하인 대학(원)생·미취업 청년, 중소기업 재직 1년 이하 사회초년생, 창업 1년 이내 청년 사업자 대상. 고정금리이며 사회적배려대상자는 연 1.9%부터. 한도 1,200만 원은 평생 통산으로, 생활자금은 1회 300만 원, 특정용도자금(주거·의료비 등)은 1회 최대 900만 원."
     },
     "불법사금융예방대출": {
       "rate": 12.5, "effective_rate_full_repay": 6.3,
@@ -117,7 +120,9 @@
     "sources": [
       {"title": "햇살론 통합 반년…금리상한 15.9%→12.5% (데일리안, 2026.7.7)", "url": "https://www.dailian.co.kr/news/view/1663934/"},
       {"title": "[2026년 병오년] 달라지는 금융제도 (불법사금융예방대출 12.5%)", "url": "https://v.daum.net/v/1bIIHycnZw"},
-      {"title": "2026 햇살론 개편 총정리 (서민머니, 금융위·서금원 보도자료 인용)", "url": "https://seomin.kr/sun-reform-summary/"}
+      {"title": "2026 햇살론 개편 총정리 (서민머니, 금융위·서금원 보도자료 인용)", "url": "https://seomin.kr/sun-reform-summary/"},
+      {"title": "케이뱅크 햇살론유스 출시: 금리 연 1.9~4%, 한도 1,200만 원 (스마트투데이, 2026.10.7)", "url": "https://www.smarttoday.co.kr/ko-kr/articles/112350"},
+      {"title": "2026 햇살론유스 신청자격·한도 총정리 (생활경제꿀팁, 2026.9)", "url": "https://www.lifeinformations.com/2026/09/2026-hassallon-youth-eligibility-limit-reloan-guide.html"}
     ]
   },
 

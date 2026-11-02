@@ -84,4 +84,6 @@ def test_policy_loan_matching():
     assert m(income_man=3000, score=600, **base) == {"햇살론 일반보증", "햇살론 특례보증", "불법사금융예방대출"}
     assert m(income_man=4000, score=600, **base) == {"햇살론 일반보증", "불법사금융예방대출"}
     assert m(income_man=4000, score=800, **base) == set()
-    assert "햇살론유스" in m(income_man=6000, score=900, **{**base, "age": 27})
+    assert "햇살론유스" in m(income_man=3000, score=900, **{**base, "age": 27})
+    assert "햇살론유스" not in m(income_man=6000, score=900, **{**base, "age": 27})  # 소득 초과
+    assert "햇살론유스" not in m(income_man=3000, score=900, **{**base, "age": 35})  # 나이 초과
