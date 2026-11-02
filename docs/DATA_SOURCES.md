@@ -7,7 +7,34 @@
 
 ---
 
-## 1. Give Me Some Credit: 메인 데이터 (모델 학습에 사용)
+## 0. Freddie Mac 주택담보대출 (최신 실제 데이터, 2026.11 추가)
+
+| 항목 | 내용 |
+|---|---|
+| **원 출처** | Freddie Mac Single-Family Loan-Level Dataset (SFLLD), **Release 48 (2026년 10월)** |
+| **원본 URL** | https://freddiemac.com/research/datasets/sf-loanlevel-dataset (Clarity Data Intelligence 회원가입 후 다운로드) |
+| 사용 파일 | `sample_2021.zip`, `sample_2022.zip`, `sample_2023.zip` (연도별 무작위 50,000건 샘플, 파일 생성일 2026-10-21) |
+| 내용 | 미국 실제 주택담보대출의 실행 시점 정보(FICO, DTI, LTV, 금리, 금액, 목적 등)와 **2026년 6월까지의 월별 상환 기록**(연체 일수, 종료 사유, 실제 손실액) |
+| 규모 | 대출 150,000건, 월별 기록 약 637만 행 |
+| 이용 조건 | 비상업·학술·연구 목적 무료. **원본 재배포 금지** → 저장소에는 원본을 올리지 않고 집계 결과만 포함 |
+| 수집 | 사용자가 직접 다운로드해 제공 (2026-11-02) |
+| 레이아웃 | 대출 정보 31열, 월별 기록 35열. 일반 사용자 가이드(July 2026)와 실제 값 분포로 열 위치를 확인함 |
+
+```
+sample_2021.zip  SHA-256 cc31fd0fcc8206797c549353ddb4b57486cdf0fd4ef87fb2b2c9a48082faf787
+sample_2022.zip  SHA-256 53055dcb1f49bde3263ec371d5051b4ad1ca7fb8c102a4a12279178da4c10bb1
+sample_2023.zip  SHA-256 b3645dfa849d1928828019721f643e21b54cb4429f0a5ea246c19cfcc6b5bb80
+```
+
+**부도 정의**: 첫 납부 후 24개월 안에 90일 이상 연체(상태 03 이상·RA) 또는 부실 종료(종료 코드 02·03·09·15). 코로나 상환유예(F)·재난(Y) 기간의 연체는 제외했다(민감도 분석용으로 포함한 정의도 함께 저장).
+**처리 스크립트**: `scripts/prepare_freddie.py` → `notebooks/02_freddie_mac_mortgage.ipynb`
+**참고**: [General User Guide (July 2026)](https://www.freddiemac.com/fmac-resources/research/pdf/general_user_guide_july_2026.pdf)
+
+**왜 한국 데이터가 아닌가**: 한국은 개인별 실제 대출·연체 기록이 신용정보법상 공개되지 않는다(한국신용정보원 CreDB는 별도 신청·심사 필요). 실제 연체 결과가 있는 최신 공개 데이터로 미국 정부 산하 주택금융기관 자료를 선택했다.
+
+---
+
+## 1. Give Me Some Credit: v1 데이터 (2011, 앱 '내 신용점수'·정책 시뮬레이터에 사용)
 
 | 항목 | 내용 |
 |---|---|
