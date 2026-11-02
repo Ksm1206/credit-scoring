@@ -187,7 +187,7 @@ if res:
             base = (st.context.url or "").split("?")[0]
         except Exception:
             base = ""
-        st.code(f"{base or 'https://<배포주소>.streamlit.app/'}?ref=share", language=None)
+        st.code(f"{base or 'https://credit-score-ksm.streamlit.app/'}?ref=share", language=None)
 
 with st.expander("ℹ️ 이 시뮬레이터에 대해"):
     st.markdown(

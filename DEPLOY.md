@@ -53,7 +53,7 @@ Streamlit Cloud는 재시작하면 디스크가 초기화된다. 그래서 SQLit
 
 ## 홍보 전 체크리스트
 - [ ] 앱에서 점수 계산 → Supabase Table Editor의 `events`에 행이 생기는지 확인
-- [ ] README 상단 `<배포주소>`를 실제 주소로 교체 (GitHub에서 README.md 연필 아이콘으로 바로 수정 가능)
+- [x] README 상단 `<배포주소>`를 실제 주소로 교체 → https://credit-score-ksm.streamlit.app (GitHub에서 README.md 연필 아이콘으로 바로 수정 가능)
 - [ ] 테스트 기록 삭제: Supabase SQL Editor에서 `DELETE FROM events;` 실행
 - [ ] 이 시점의 날짜를 실험 시작일로 기록 (`docs/changelog.md`)
 
