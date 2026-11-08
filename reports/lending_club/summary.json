@@ -1,0 +1,26 @@
+{
+  "n_train": 11995,
+  "n_valid": 2999,
+  "n_test": 14101,
+  "bad_rate_train": 0.11524609843937575,
+  "bad_rate_test": 0.10630451741011276,
+  "auc_scorecard_test": 0.621679702036982,
+  "auc_int_rate_test": 0.6382654563445408,
+  "features_used": [
+    "annual_inc",
+    "dti",
+    "revol_util",
+    "revol_bal",
+    "inq_last_6mths",
+    "pub_rec",
+    "open_acc",
+    "total_acc",
+    "emp_length_years",
+    "credit_history_months"
+  ],
+  "cut_unit": 536,
+  "cut_money": 507,
+  "real_loss_to_gain_ratio": 2.705730383358011,
+  "avg_profit_good_usd": 1457.2261411096756,
+  "avg_loss_bad_usd": 3942.861045423998
+}

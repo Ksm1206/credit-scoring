@@ -1,0 +1,13 @@
+﻿변수,설명,IV,사용
+loan_amnt,대출 신청 금액,0.0175,False
+annual_inc,연소득,0.0605,True
+dti,DTI,0.0235,True
+revol_util,리볼빙 사용률,0.1105,True
+revol_bal,리볼빙 잔액,0.0285,True
+inq_last_6mths,최근 6개월 조회 수,0.061,True
+delinq_2yrs,2년 내 연체 수,0.0035,False
+pub_rec,공공 부정 기록,0.0265,True
+open_acc,보유 신용 계좌,0.0214,True
+total_acc,전체 신용 계좌,0.0202,True
+emp_length_years,근속 연수,0.0223,True
+credit_history_months,신용 이력 개월,0.0281,True
