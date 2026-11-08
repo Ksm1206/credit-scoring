@@ -1,0 +1,11 @@
+﻿변수,설명,기존 구간 수,단조 구간 수,기존 단조 여부,단조 후 단조 여부,기존 IV,단조 IV,기존 모델 사용,단조 모델 사용,정제+단조 구간 수,정제+단조 단조 여부,정제+단조 IV,정제+단조 모델 사용
+rev_util,리볼빙 한도 사용률,6,6,True,True,1.1255,1.1255,True,True,6,True,1.1255,True
+age,나이,6,6,True,True,0.2454,0.2454,True,True,6,True,0.2454,True
+late_30_59,30~59일 연체 횟수(2년),4,4,True,True,0.7388,0.7388,True,True,4,True,0.7388,True
+debt_ratio,DTI(월 부채상환액 / 월소득),6,3,False,True,0.0866,0.0116,True,False,5,True,0.0927,True
+monthly_income,월소득(USD),6,2,False,True,0.0949,0.0126,True,False,4,True,0.0896,True
+open_credit_lines,보유 대출·카드 수,6,5,False,True,0.0969,0.0923,False,False,5,True,0.0923,False
+late_90,90일 이상 연체 횟수,2,2,True,True,0.8318,0.8318,True,True,2,True,0.8318,True
+real_estate_loans,부동산 담보대출 수,5,3,False,True,0.0664,0.0144,True,False,5,False,0.0664,True
+late_60_89,60~89일 연체 횟수(2년),2,2,True,True,0.5543,0.5543,True,True,2,True,0.5543,True
+dependents,부양가족 수,5,5,True,True,0.0369,0.0369,True,True,5,True,0.0369,True
